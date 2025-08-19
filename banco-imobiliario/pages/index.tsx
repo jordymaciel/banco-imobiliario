@@ -25,14 +25,14 @@ export default function HomePage() {
         players: [],
         status: 'waiting',
         initialBalance: 1500,
-        bankBalance: 100000000, // <-- NOVO: Saldo inicial do banco
+        bankBalance: 100000000,
       });
       localStorage.setItem(`banco_imobiliario_host_${gameDocRef.id}`, 'true');
-      toast.success(`Jogo ${newRoomCode} criado!`);
+      toast.success(`Sala ${newRoomCode} criada!`);
       router.push(`/game/${gameDocRef.id}`);
     } catch (error) {
       console.error("Erro ao criar o jogo:", error);
-      toast.error("Não foi possível criar o jogo.");
+      toast.error("Falha ao criar sala. Tente novamente.");
       setIsCreating(false);
     }
   };
@@ -47,7 +47,7 @@ export default function HomePage() {
       const querySnapshot = await getDocs(q);
       
       if (querySnapshot.empty) {
-        toast.error('Código da sala não encontrado.');
+        toast.error('Código da sala inválido.');
         setIsJoining(false);
         return;
       }
@@ -57,33 +57,33 @@ export default function HomePage() {
 
     } catch (error) {
       console.error("Erro ao entrar no jogo:", error);
-      toast.error("Ocorreu um erro ao tentar entrar na sala.");
+      toast.error("Ocorreu um erro ao conectar à sala.");
       setIsJoining(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white font-sans">
-      <div className="w-full max-w-md p-8 space-y-8 bg-gray-800 rounded-2xl shadow-2xl">
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <div className="w-full max-w-md p-8 space-y-6 bg-slate-900/50 border border-cyan-500/30 rounded-lg shadow-2xl shadow-cyan-500/10 backdrop-blur-sm">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-cyan-400">Banco Imobiliário</h1>
-          <p className="text-gray-400 mt-2">Gerencie suas partidas de forma digital.</p>
+          <h1 className="text-5xl font-bold text-cyan-400 tracking-widest">B.I.</h1>
+          <p className="text-slate-400 mt-2">Banco Imobiliário Digital</p>
         </div>
 
         <button
           onClick={handleCreateGame}
           disabled={isCreating}
-          className="w-full flex justify-center items-center px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-lg transition-transform transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed"
+          className="w-full flex justify-center items-center px-6 py-3 bg-cyan-500/80 hover:bg-cyan-400 text-slate-900 font-bold rounded-md transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-400/40 disabled:bg-slate-700 disabled:cursor-not-allowed"
         >
-          {isCreating ? <Spinner /> : 'Criar Novo Jogo'}
+          {isCreating ? <Spinner /> : 'NOVA SALA'}
         </button>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-600" />
+            <div className="w-full border-t border-slate-700" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-gray-800 text-gray-400">OU</span>
+            <span className="px-2 bg-slate-900 text-slate-500">OU</span>
           </div>
         </div>
 
@@ -91,17 +91,17 @@ export default function HomePage() {
           <input
             type="text"
             value={roomCode}
-            onChange={(e) => setRoomCode(e.target.value)}
-            placeholder="Digite o código da sala"
-            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+            placeholder="CÓDIGO DA SALA"
+            className="w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-md text-white placeholder-slate-500 tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all"
             maxLength={5}
           />
           <button
             type="submit"
             disabled={isJoining || !roomCode}
-            className="w-full flex justify-center items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg transition-transform transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed"
+            className="w-full flex justify-center items-center px-6 py-3 bg-fuchsia-600/80 hover:bg-fuchsia-500 text-slate-900 font-bold rounded-md transition-all duration-300 shadow-lg shadow-fuchsia-600/20 hover:shadow-fuchsia-500/40 disabled:bg-slate-700 disabled:cursor-not-allowed"
           >
-            {isJoining ? <Spinner /> : 'Entrar em um Jogo'}
+            {isJoining ? <Spinner /> : 'CONECTAR'}
           </button>
         </form>
       </div>
